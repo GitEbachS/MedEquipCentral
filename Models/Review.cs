@@ -9,6 +9,8 @@ public class Review
     public Product Product { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }
+
+    [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
     public string DateCreated { get; set; }
     public string CommentReview { get; set; }
 }
