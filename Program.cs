@@ -47,6 +47,15 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
+CategoryApi.Map(app);
+FavoritesListApi.Map(app);
+JobFunctionApi.Map(app);
+OrderApi.Map(app);
+OrderProductsApi.Map(app);
+ProductApi.Map(app);
+ReviewApi.Map(app);
+SimilarItemApi.Map(app);
+UserApi.Map(app);
 
 app.Run();
 
