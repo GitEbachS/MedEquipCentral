@@ -10,7 +10,7 @@ namespace MedEquipCentral.Controllers
             //check user's uid in the database
             app.MapPost("/checkUser/{uid}", (MedEquipCentralDbContext db, string uid) =>
             {
-                var user = db.Users.Where(u => u.Uid == uid).ToList();
+                var user = db.Users.Where(u => u.Uid == uid).FirstOrDefault();
 
                 if (user == null)
                 {
@@ -40,7 +40,7 @@ namespace MedEquipCentral.Controllers
                     Address = newUserDto.Address,
                     JobFunctionId = newUserDto.JobFunctionId,
                     IsBizOwner = newUserDto.IsBizOwner,
-                    Uid = existingUser.Uid,
+                    Uid = newUserDto.Uid,
                     IsAdmin = false
                 };
 
@@ -49,7 +49,33 @@ namespace MedEquipCentral.Controllers
 
                 return Results.Created($"/users/{newUser.Id}", newUser);
             });
+
+            //update User
+            app.MapPut("/updateUser/{userId}", (MedEquipCentralDbContext db, int userId, UserDto updatedUserDto) =>
+            {
+                var userToUpdate = db.Users.Find(userId);
+
+                if (userToUpdate == null)
+                {
+                    return Results.NotFound();     //  return a 404 Not Found response
+                }
+
+                userToUpdate.FirstName = updatedUserDto.FirstName;
+                userToUpdate.LastName = updatedUserDto.LastName;
+                userToUpdate.Image = updatedUserDto.Image;
+                userToUpdate.Email = updatedUserDto.Email;
+                userToUpdate.Address = updatedUserDto.Address;
+                userToUpdate.JobFunctionId = updatedUserDto.JobFunctionId;
+                userToUpdate.IsBizOwner = updatedUserDto.IsBizOwner;
+                userToUpdate.Uid = updatedUserDto.Uid;
+
+                db.SaveChanges();
+
+                // Return a 200 OK response with the updated user details in the response body
+                return Results.Ok(userToUpdate);
+            });
+
+
         }
-    }
     }
 }

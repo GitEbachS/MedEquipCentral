@@ -8,8 +8,8 @@
         public string Email { get; set; }
         public string Address { get; set; }
         public int JobFunctionId { get; set; }
-        public bool IsAdmin { get; set; }
         public bool IsBizOwner { get; set; }
+        public string Uid { get; set;}
 
     }
 }
