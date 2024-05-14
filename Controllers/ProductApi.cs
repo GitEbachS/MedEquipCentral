@@ -122,6 +122,32 @@ namespace MedEquipCentral.Controllers
                 return Results.Created($"/product/new/{newProduct.Id}", newProduct);
             });
 
+           
+            //Search products by Name, Description, or Category Name
+            app.MapGet("/products/search/{query}", (MedEquipCentralDbContext db, string query) =>
+            {
+                if (string.IsNullOrWhiteSpace(query))
+                {
+                    return Results.BadRequest("Search query cannot be empty");
+                }
+
+                var filteredProducts = db.Products
+                                                    .Include(p => p.Category)
+                                    .Where(p => p.Name.ToLower().Contains(query.ToLower()) ||
+                                    p.Description.ToLower().Contains(query.ToLower()) ||
+                                    p.Category.Name.ToLower().Contains(query.ToLower()))
+                                    .ToList();
+
+                if (filteredProducts.Count == 0)
+                {
+                    return Results.NotFound("No products found for the given search query.");
+                }
+                else
+                {
+                    return Results.Ok(filteredProducts);
+                }
+            });
+
         }
     }
 }
