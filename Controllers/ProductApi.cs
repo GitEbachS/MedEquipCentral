@@ -1,4 +1,5 @@
 ﻿using MedEquipCentral.Models;
+using MedEquipCentral.DTO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 namespace MedEquipCentral.Controllers
@@ -24,6 +25,7 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok(products);
             });
 
+            //view product details
             app.MapGet("/products/{productId})", (MedEquipCentralDbContext db, int productId) =>
             {
                 var productDetails = db.Products
@@ -68,9 +70,57 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok(productDetails);
             });
 
+            //delete product
+            app.MapDelete("/products/{productId}", (MedEquipCentralDbContext db, int productId) =>
+            {
+                var product = db.Products.Find(productId);
+                if (product == null)
+                {
+                    return Results.NotFound();
+                }
 
+                db.Products.Remove(product);
+                db.SaveChanges();
+                return Results.NoContent();
+            });
 
+            //update Product
+            app.MapPut("/products/update/{id}", (MedEquipCentralDbContext db, int id, ProductDto productToUpdateDto) =>
+{
+                Product productToUpdate = db.Products.SingleOrDefault(product => product.Id == id);
+                if (productToUpdate == null)
+                {
+                    return Results.NotFound();
+                }
+                productToUpdate.Name = productToUpdateDto.Name;
+                productToUpdate.CatId = productToUpdateDto.CatId;
+                productToUpdate.Image = productToUpdateDto.Image;
+                productToUpdate.Description = productToUpdateDto.Description;
+                productToUpdate.Price = productToUpdateDto.Price;
 
+                db.SaveChanges();
+                return Results.NoContent();
+            });
+
+            //create Product
+            app.MapPost("/product/new", (MedEquipCentralDbContext db, ProductDto productDto) =>
+            {
+                // Create a new Product entity from the provided DTO
+                var newProduct = new Product
+                {
+                    Name = productDto.Name,
+                    Image = productDto.Image,
+                    CatId = productDto.CatId,
+                    Description = productDto.Description,
+                    Price = productDto.Price
+                };
+
+                // Add the new product to the database
+                db.Products.Add(newProduct);
+                db.SaveChanges();
+
+                return Results.Created($"/product/new/{newProduct.Id}", newProduct);
+            });
 
         }
     }
