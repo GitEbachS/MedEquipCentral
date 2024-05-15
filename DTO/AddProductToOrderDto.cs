@@ -1,4 +1,5 @@
-﻿namespace MedEquipCentral.DTO
+﻿using System.ComponentModel.DataAnnotations;
+namespace MedEquipCentral.DTO
 {
     public class AddProductToOrderDto
     {

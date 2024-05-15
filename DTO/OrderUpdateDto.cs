@@ -1,4 +1,4 @@
-﻿using MedEquipCentral.Models;
+﻿using System.ComponentModel.DataAnnotations;
 namespace MedEquipCentral.DTO
 {
     public class OrderUpdateDto
