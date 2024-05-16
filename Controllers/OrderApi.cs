@@ -7,28 +7,7 @@ namespace MedEquipCentral.Controllers
     {
         public static void Map(WebApplication app)
         {
-            //create order
-            app.MapPost("/newOrder/{userId}", (MedEquipCentralDbContext db, int userId) =>
-            {
-                var user = db.Users.Find(userId);
-
-                if (user == null)
-                {
-                    return Results.NotFound();
-                }
-
-                // Create a new Order entity for the user
-                var newOrder = new Order
-                {
-                    UserId = userId,
-                    IsClosed = false,
-                };
-
-                db.Orders.Add(newOrder);
-                db.SaveChanges();
-
-                return Results.Created($"/orders/{newOrder.Id}", newOrder);
-            });
+            
             //get Order total for the Checkout Page
             app.MapGet("/order/total/{orderId}/{userId}", (MedEquipCentralDbContext db, int orderId, int userId) =>
             {
@@ -129,7 +108,33 @@ namespace MedEquipCentral.Controllers
 
                 db.SaveChanges();
                 return Results.NoContent();
-            }); 
+            });
+
+            //// Create or retrieve open order for a user
+            app.MapPost("/orders/create/{userId}", async (MedEquipCentralDbContext db, int userId) =>
+            {
+                var openOrder = await db.Orders
+                    .Where(o => o.UserId == userId && !o.IsClosed)
+                    .FirstOrDefaultAsync();
+
+                if (openOrder != null)
+                {
+                    return Results.Ok(openOrder);
+                }
+
+                var newOrder = new Order
+                {
+                    UserId = userId,
+                    IsClosed = false
+                    
+                };
+
+                db.Orders.Add(newOrder);
+                await db.SaveChangesAsync();
+
+                return Results.Created($"/orders/{newOrder.Id}", newOrder);
+            });
+
         }
     }
 }
