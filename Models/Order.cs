@@ -7,7 +7,6 @@ public class Order
     public int UserId { get; set; }
     public User User { get; set; }
 
-    [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? CloseDate { get; set; }
     public bool IsClosed { get; set; }
     public decimal Total => CalculateTotalPrice();

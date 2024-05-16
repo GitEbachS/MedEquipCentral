@@ -7,6 +7,8 @@ namespace MedEquipCentral.Controllers
     {
         public static void Map(WebApplication app)
         {
+
+            //add product to an order
             app.MapPost("/orders/addProduct", (MedEquipCentralDbContext db, AddProductToOrderDto orderProductDto) =>
             {
                 var order = db.Orders.FirstOrDefault(o => o.Id == orderProductDto.OrderId);
@@ -34,7 +36,7 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok("Product added to order successfully");
             });
 
-            //delete product from favorites list
+            //delete product from an order
             app.MapDelete("/orders/remove-product/{orderId}/{productId}", (MedEquipCentralDbContext db, int orderId, int productId) =>
             {
                 // Find the order by orderId

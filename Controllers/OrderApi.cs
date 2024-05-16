@@ -29,6 +29,24 @@ namespace MedEquipCentral.Controllers
 
                 return Results.Created($"/orders/{newOrder.Id}", newOrder);
             });
+            //get Order total for the Checkout Page
+            app.MapGet("/order/total/{orderId}/{userId}", (MedEquipCentralDbContext db, int orderId, int userId) =>
+            {
+                var order = db.Orders
+                .SingleOrDefault(o => o.Id == orderId && o.UserId == userId);
+
+                if (order == null)
+                {
+                    return Results.NotFound();
+                }
+
+                var orderTotal = new
+                {
+                    order.Total
+                };
+
+                return Results.Ok(orderTotal);
+            });
 
             //view order details
             app.MapGet("/orders/{userId}/{orderId}", (MedEquipCentralDbContext db, int userId, int orderId) =>
@@ -92,9 +110,10 @@ namespace MedEquipCentral.Controllers
             });
 
             //update order
-            app.MapPut("/orders/update/{id}", (MedEquipCentralDbContext db, int id, OrderUpdateDto orderUpdateDto) =>
+            app.MapPut("/orders/{userId}/update/{id}", (MedEquipCentralDbContext db, int id, int userId, OrderUpdateDto orderUpdateDto) =>
             {
-                var orderToUpdate = db.Orders.SingleOrDefault(order => order.Id == id);
+                var orderToUpdate = db.Orders
+                .SingleOrDefault(order => order.Id == id && order.UserId == userId);
                 if (orderToUpdate == null)
                 {
                     return Results.NotFound();
@@ -104,7 +123,7 @@ namespace MedEquipCentral.Controllers
                 orderToUpdate.CreditCardNumber = orderUpdateDto.CreditCardNumber;
                 orderToUpdate.ExpirationDate = orderUpdateDto.ExpirationDate;
                 orderToUpdate.CVV = orderUpdateDto.CVV;
-                orderToUpdate.Zip = orderUpdateDto.Zip;
+                orderToUpdate.Zip = orderToUpdate.Zip;
                 orderToUpdate.CloseDate = DateTime.Now;
                 orderToUpdate.IsClosed = true;
 

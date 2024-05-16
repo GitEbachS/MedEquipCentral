@@ -47,7 +47,7 @@ namespace MedEquipCentral.Controllers
                         {
                             r.Id,
                             r.Rating,
-                            DateCreated = r.DateCreated,
+                            DateCreated = r.DateCreated.ToString("MM/dd/yyyy"),
                             r.CommentReview,
                             User = new { r.User.FirstName, r.User.LastName, r.User.Image } 
                         }),

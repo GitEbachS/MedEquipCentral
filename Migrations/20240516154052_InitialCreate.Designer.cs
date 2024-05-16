@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MedEquipCentral.Migrations
 {
     [DbContext(typeof(MedEquipCentralDbContext))]
-    [Migration("20240514141958_RenameOrderProducts")]
-    partial class RenameOrderProducts
+    [Migration("20240516154052_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,9 +164,8 @@ namespace MedEquipCentral.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -231,6 +230,10 @@ namespace MedEquipCentral.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("text");
 

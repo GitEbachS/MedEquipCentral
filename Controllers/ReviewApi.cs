@@ -23,7 +23,7 @@ namespace MedEquipCentral.Controllers
                     CommentReview = newReviewDto.CommentReview,
                     UserId = newReviewDto.UserId,
                     ProductId = newReviewDto.ProductId,
-                    DateCreated = newReviewDto.DateCreated,
+                    DateCreated = DateTime.Now,
                 };
 
                 db.Reviews.Add(newReview);
@@ -43,7 +43,6 @@ namespace MedEquipCentral.Controllers
 
                 reviewToUpdate.Rating = updatedReviewDto.Rating;
                 reviewToUpdate.CommentReview = updatedReviewDto.CommentReview;
-                reviewToUpdate.DateCreated = updatedReviewDto.DateCreated;
 
                 db.SaveChanges();
 

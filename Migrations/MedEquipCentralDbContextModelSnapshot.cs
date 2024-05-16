@@ -162,9 +162,8 @@ namespace MedEquipCentral.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
