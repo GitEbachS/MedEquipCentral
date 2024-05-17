@@ -1,4 +1,34 @@
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
+using MedEquipCentral.Controllers;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// allows passing datetimes without time zone data 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+// allows our api endpoints to access the database through Entity Framework Core
+builder.Services.AddNpgsql<MedEquipCentralDbContext>(builder.Configuration["MedEquipCentralDbConnectionString"]);
+
+// Set the JSON serializer options
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -14,31 +44,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+CategoryApi.Map(app);
+FavoritesListApi.Map(app);
+JobFunctionApi.Map(app);
+OrderApi.Map(app);
+OrderProductsApi.Map(app);
+ProductApi.Map(app);
+ReviewApi.Map(app);
+SimilarItemApi.Map(app);
+UserApi.Map(app);
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
