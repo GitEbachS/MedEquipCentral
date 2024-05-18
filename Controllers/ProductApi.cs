@@ -26,7 +26,7 @@ namespace MedEquipCentral.Controllers
             });
 
             //view product details
-            app.MapGet("/products/{productId})", (MedEquipCentralDbContext db, int productId) =>
+            app.MapGet("/products/{productId}", (MedEquipCentralDbContext db, int productId) =>
             {
                 var productDetails = db.Products
                     .Include(p => p.Category)
