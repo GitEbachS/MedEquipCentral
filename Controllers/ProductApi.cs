@@ -93,7 +93,7 @@ namespace MedEquipCentral.Controllers
                     return Results.NotFound();
                 }
                 productToUpdate.Name = productToUpdateDto.Name;
-                productToUpdate.CatId = productToUpdateDto.CatId;
+                productToUpdate.CategoryId = productToUpdateDto.CategoryId;
                 productToUpdate.Image = productToUpdateDto.Image;
                 productToUpdate.Description = productToUpdateDto.Description;
                 productToUpdate.Price = productToUpdateDto.Price;
@@ -110,7 +110,7 @@ namespace MedEquipCentral.Controllers
                 {
                     Name = productDto.Name,
                     Image = productDto.Image,
-                    CatId = productDto.CatId,
+                    CategoryId = productDto.CategoryId,
                     Description = productDto.Description,
                     Price = productDto.Price
                 };
