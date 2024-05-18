@@ -89,10 +89,10 @@ namespace MedEquipCentral.Controllers
             });
 
             //update order
-            app.MapPut("/orders/{userId}/update/{id}", (MedEquipCentralDbContext db, int id, int userId, OrderUpdateDto orderUpdateDto) =>
+            app.MapPut("/orders/{userId}/update/{orderId}", (MedEquipCentralDbContext db, int orderId, int userId, OrderUpdateDto orderUpdateDto) =>
             {
                 var orderToUpdate = db.Orders
-                .SingleOrDefault(order => order.Id == id && order.UserId == userId);
+                .SingleOrDefault(order => order.Id == orderId && order.UserId == userId);
                 if (orderToUpdate == null)
                 {
                     return Results.NotFound();
