@@ -74,7 +74,7 @@ namespace MedEquipCentral.Controllers
                         op.Product.Id,
                         op.Product.Name,
                         op.Product.Image,
-                        op.Product.CatId,
+                        op.Product.CategoryId,
                         Category = new
                         {
                             op.Product.Category.Id,

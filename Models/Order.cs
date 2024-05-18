@@ -13,7 +13,7 @@ public class Order
     public int TotalProducts => OrderProducts.Count;
 
     public List<OrderProduct> OrderProducts { get; set; }
-    public int? CreditCardNumber { get; set; }
+    public long? CreditCardNumber { get; set; }
     public string? ExpirationDate { get; set; }
     public int? CVV { get; set; }
     public int? Zip { get; set; }
