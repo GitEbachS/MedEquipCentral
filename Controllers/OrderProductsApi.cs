@@ -36,36 +36,23 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok("Product added to order successfully");
             });
 
+
             //delete product from an order
-            app.MapDelete("/orders/remove-product/{orderId}/{productId}", (MedEquipCentralDbContext db, int orderId, int productId) =>
+            app.MapDelete("/orders/removeProduct/{orderId}/{productId}", (MedEquipCentralDbContext db, int orderId, int productId) =>
             {
-                // Find the order by orderId
-                var order = db.Orders.FirstOrDefault(o => o.Id == orderId);
-                if (order == null)
+                OrderProduct orderProductToDelete = db.OrderProducts
+                                                    .Where(op => op.ProductId == productId)
+                                                    .Where(op => op.OrderId == orderId)
+                                                    .FirstOrDefault();
+
+                if (orderProductToDelete == null)
                 {
-                    return Results.NotFound("Order not found");
+                    return Results.NotFound();
                 }
 
-                // Find the product by productId
-                var product = db.Products.FirstOrDefault(p => p.Id == productId);
-                if (product == null)
-                {
-                    return Results.NotFound("Product not found");
-                }
-
-                // Find the order product entry to remove
-                var orderProduct = order.OrderProducts.FirstOrDefault(op => op.ProductId == productId);
-                if (orderProduct == null)
-                {
-                    return Results.NotFound("Product not found in order");
-                }
-
-                // Remove the product from the order
-                order.OrderProducts.Remove(orderProduct);
-
+                db.OrderProducts.Remove(orderProductToDelete);
                 db.SaveChanges();
-
-                return Results.Ok("Product removed from order successfully");
+                return Results.NoContent();
             });
         }
     }

@@ -12,7 +12,7 @@ public class Order
     public decimal Total => CalculateTotalPrice();
     public int TotalProducts => OrderProducts.Count;
 
-    public List<OrderProduct> OrderProducts { get; set; }
+    public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     public long? CreditCardNumber { get; set; }
     public string? ExpirationDate { get; set; }
     public int? CVV { get; set; }

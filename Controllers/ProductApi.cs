@@ -26,7 +26,7 @@ namespace MedEquipCentral.Controllers
             });
 
             //view product details
-            app.MapGet("/products/{productId})", (MedEquipCentralDbContext db, int productId) =>
+            app.MapGet("/products/{productId}", (MedEquipCentralDbContext db, int productId) =>
             {
                 var productDetails = db.Products
                     .Include(p => p.Category)
@@ -85,9 +85,9 @@ namespace MedEquipCentral.Controllers
             });
 
             //update Product
-            app.MapPut("/products/update/{id}", (MedEquipCentralDbContext db, int id, ProductDto productToUpdateDto) =>
+            app.MapPut("/products/update/{productId}", (MedEquipCentralDbContext db, int productId, ProductDto productToUpdateDto) =>
 {
-                Product productToUpdate = db.Products.SingleOrDefault(product => product.Id == id);
+                Product productToUpdate = db.Products.SingleOrDefault(product => product.Id == productId);
                 if (productToUpdate == null)
                 {
                     return Results.NotFound();

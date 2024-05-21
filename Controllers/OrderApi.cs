@@ -12,6 +12,8 @@ namespace MedEquipCentral.Controllers
             app.MapGet("/order/total/{orderId}/{userId}", (MedEquipCentralDbContext db, int orderId, int userId) =>
             {
                 var order = db.Orders
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
                 .SingleOrDefault(o => o.Id == orderId && o.UserId == userId);
 
                 if (order == null)
@@ -21,7 +23,7 @@ namespace MedEquipCentral.Controllers
 
                 var orderTotal = new
                 {
-                    order.Total
+                    Total = order.Total
                 };
 
                 return Results.Ok(orderTotal);
@@ -89,10 +91,10 @@ namespace MedEquipCentral.Controllers
             });
 
             //update order
-            app.MapPut("/orders/{userId}/update/{id}", (MedEquipCentralDbContext db, int id, int userId, OrderUpdateDto orderUpdateDto) =>
+            app.MapPut("/orders/{userId}/update/{orderId}", (MedEquipCentralDbContext db, int orderId, int userId, OrderUpdateDto orderUpdateDto) =>
             {
                 var orderToUpdate = db.Orders
-                .SingleOrDefault(order => order.Id == id && order.UserId == userId);
+                .SingleOrDefault(order => order.Id == orderId && order.UserId == userId && !order.IsClosed);
                 if (orderToUpdate == null)
                 {
                     return Results.NotFound();
@@ -133,6 +135,18 @@ namespace MedEquipCentral.Controllers
                 await db.SaveChangesAsync();
 
                 return Results.Created($"/orders/{newOrder.Id}", newOrder);
+            });
+
+            //Get client order history
+            app.MapGet("/orderHistory/{userId}", (MedEquipCentralDbContext db, int userId) =>
+            {
+                var orderhistory = db.Orders
+                                     .Include(o => o.OrderProducts)
+                                        .ThenInclude(op => op.Product)
+                                    .Where(o => o.UserId == userId)
+                                    .ToList();
+
+                return Results.Ok(orderhistory);
             });
 
         }
