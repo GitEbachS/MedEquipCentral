@@ -75,7 +75,16 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok(userToUpdate);
             });
 
-
+            //get single user's details
+            app.MapGet("/singleUser/{userId}", (MedEquipCentralDbContext db, int userId) =>
+            {
+                User singleUser = db.Users.SingleOrDefault(u => u.Id == userId);
+                if (singleUser == null)
+                {
+                    return Results.NotFound();
+                }
+                return Results.Ok(singleUser);
+            });
         }
     }
 }
