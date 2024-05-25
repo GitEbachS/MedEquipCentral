@@ -16,6 +16,7 @@ namespace MedEquipCentral.Controllers
                                 {
                                     p.Id,
                                     p.Name,
+                                    p.Image,
                                     p.Description,
                                     p.Price,
                                     Category = new { p.Category.Id, p.Category.Name }
@@ -40,6 +41,7 @@ namespace MedEquipCentral.Controllers
                     {
                         p.Id,
                         p.Name,
+                        p.Image,
                         p.Description,
                         p.Price,
                         Category = new { p.Category.Id, p.Category.Name },
@@ -55,6 +57,7 @@ namespace MedEquipCentral.Controllers
                         {
                             SimilarProductId = si.SimilarProduct.Id,
                             SimilarProductName = si.SimilarProduct.Name,
+                            SimilarProductImage = si.SimilarProduct.Image,
                             SimilarProductDescription = si.SimilarProduct.Description,
                             SimilarProductPrice = si.SimilarProduct.Price,
                             SimilarProductCategory = new { si.SimilarProduct.Category.Id, si.SimilarProduct.Category.Name }

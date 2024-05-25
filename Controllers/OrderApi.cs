@@ -112,7 +112,7 @@ namespace MedEquipCentral.Controllers
                 return Results.NoContent();
             });
 
-            //// Create or retrieve open order for a user
+            // Create or retrieve open order for a user
             app.MapPost("/orders/create/{userId}", async (MedEquipCentralDbContext db, int userId) =>
             {
                 var openOrder = await db.Orders
