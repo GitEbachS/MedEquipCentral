@@ -78,11 +78,28 @@ namespace MedEquipCentral.Controllers
             //get single user's details
             app.MapGet("/singleUser/{userId}", (MedEquipCentralDbContext db, int userId) =>
             {
-                User singleUser = db.Users.SingleOrDefault(u => u.Id == userId);
+                var singleUser = db.Users
+                .Include(u => u.JobFunction)
+                .Where(u => u.Id == userId)
+                .Select(u => new
+                {
+                    u.FirstName,
+                    u.LastName, 
+                    u.Image, 
+                    u.Email,
+                    u.Address,
+                    u.JobFunctionId,
+                    JobFunction = new {u.JobFunction.Id, u.JobFunction.Name },
+                    u.IsBizOwner,
+                    u.IsAdmin
+                })
+
+                .SingleOrDefault();
                 if (singleUser == null)
                 {
                     return Results.NotFound();
                 }
+
                 return Results.Ok(singleUser);
             });
         }
