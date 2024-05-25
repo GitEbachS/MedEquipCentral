@@ -71,6 +71,7 @@ namespace MedEquipCentral.Controllers
                     order.IsClosed,
                     order.Total,
                     order.TotalProducts,
+                    CloseDate = order.CloseDate.HasValue ? order.CloseDate.Value.ToString("MM/dd/yyyy") : null,
                     Products = order.OrderProducts.Select(op => new
                     {
                         op.Product.Id,

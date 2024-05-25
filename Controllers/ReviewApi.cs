@@ -49,6 +49,35 @@ namespace MedEquipCentral.Controllers
                 return Results.NoContent();
             });
 
+            //get Review by userId
+            app.MapGet("/review/{userId}", (MedEquipCentralDbContext db, int userId) =>
+            {
+                var userReviews = db.Reviews
+                .Include(r => r.Product)
+                .Where(r => r.UserId == userId)
+                .Select(r => new
+                {
+                    r.Id,
+                    r.Rating,
+                    r.CommentReview,
+                    DateCreated = r.DateCreated.ToString("MM/dd/yyyy"),
+                    Product = new
+                    {
+                        r.Product.Id,
+                        r.Product.Name,
+                        r.Product.Image,
+                        r.Product.Price
+                    }
+                })
+                .ToList();
+
+                if (userReviews.Count == 0)
+                {
+                    return Results.NotFound("No reviews found for this user");
+                }
+                return Results.Ok(userReviews);
+            });
+
             //delete Review
             app.MapDelete("/reviews/delete/{reviewId}", (MedEquipCentralDbContext db, int reviewId) =>
             {
