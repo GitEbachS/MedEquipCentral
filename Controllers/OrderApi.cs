@@ -29,6 +29,29 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok(orderTotal);
             });
 
+            //get the cart that is open to add products to it
+            app.MapGet("/orders/{userId}", (MedEquipCentralDbContext db, int userId) =>
+            {
+                var openOrder = db.Orders
+                    .Where(o => !o.IsClosed && o.UserId == userId)
+                    .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
+                    .Select(o => new
+                    {
+                        OrderId = o.Id,
+                        Products = o.OrderProducts.Select(op => op.ProductId).ToList()
+                    })
+                    .SingleOrDefault();
+
+                if (openOrder == null)
+                {
+                    return Results.NotFound();
+                }
+
+                return Results.Ok(openOrder);
+            });
+
+
             //view order details
             app.MapGet("/orders/{userId}/{orderId}", (MedEquipCentralDbContext db, int userId, int orderId) =>
             {

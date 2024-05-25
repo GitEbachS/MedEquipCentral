@@ -73,7 +73,7 @@ namespace MedEquipCentral.Controllers
 
                 if (userReviews.Count == 0)
                 {
-                    return Results.NotFound("No reviews found for this user");
+                    return Results.NotFound();
                 }
                 return Results.Ok(userReviews);
             });
