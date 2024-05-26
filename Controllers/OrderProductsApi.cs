@@ -37,22 +37,23 @@ namespace MedEquipCentral.Controllers
             });
 
             //get the orderProduct quantity in an order
-            app.MapPut("/orderProduct/quantity/{productId}/{orderId}/{newQuantity}", (MedEquipCentralDbContext db, int productId, int orderId, int newQuantity) =>
+            app.MapPut("/orderProduct/quantity", (MedEquipCentralDbContext db, UpdateOrderProductQuantityDTO dto) =>
             {
                 var orderProduct = db.OrderProducts
-                                    .SingleOrDefault(op => op.ProductId == productId && op.OrderId == orderId);
+                    .SingleOrDefault(op => op.ProductId == dto.ProductId && op.OrderId == dto.OrderId);
 
                 if (orderProduct != null)
                 {
-                    orderProduct.Quantity = newQuantity;
-                    db.SaveChanges(); 
-                    return Results.Ok(); 
+                    orderProduct.Quantity = dto.NewQuantity;
+                    db.SaveChanges();
+                    return Results.Ok();
                 }
                 else
                 {
-                    return Results.NotFound(); 
+                    return Results.NotFound();
                 }
             });
+
 
 
             //delete product from an order
