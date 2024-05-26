@@ -107,7 +107,8 @@ namespace MedEquipCentral.Controllers
                             op.Product.Category.Name
                         },
                         op.Product.Description,
-                        op.Product.Price
+                        op.Product.Price,
+                        Quantity = op.Quantity
                     }).ToList()
                 };
 
