@@ -36,6 +36,24 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok("Product added to order successfully");
             });
 
+            //get the orderProduct quantity in an order
+            app.MapPut("/orderProduct/quantity/{productId}/{orderId}/{newQuantity}", (MedEquipCentralDbContext db, int productId, int orderId, int newQuantity) =>
+            {
+                var orderProduct = db.OrderProducts
+                                    .SingleOrDefault(op => op.ProductId == productId && op.OrderId == orderId);
+
+                if (orderProduct != null)
+                {
+                    orderProduct.Quantity = newQuantity;
+                    db.SaveChanges(); 
+                    return Results.Ok(); 
+                }
+                else
+                {
+                    return Results.NotFound(); 
+                }
+            });
+
 
             //delete product from an order
             app.MapDelete("/orders/removeProduct/{orderId}/{productId}", (MedEquipCentralDbContext db, int orderId, int productId) =>
