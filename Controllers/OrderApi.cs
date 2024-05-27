@@ -79,6 +79,7 @@ namespace MedEquipCentral.Controllers
                         order.User.Id,
                         order.User.FirstName,
                         order.User.LastName,
+                        order.User.Image,
                         order.User.Email,
                         order.User.Address,
                         order.User.JobFunctionId,
