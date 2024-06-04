@@ -28,7 +28,8 @@ namespace MedEquipCentral.Controllers
                 order.OrderProducts.Add(new OrderProduct
                 {
                     ProductId = orderProductDto.ProductId,
-                    OrderId = orderProductDto.OrderId
+                    OrderId = orderProductDto.OrderId,
+                    Quantity = 1
                 });
 
                 db.SaveChanges();
@@ -40,7 +41,7 @@ namespace MedEquipCentral.Controllers
             app.MapPut("/orderProduct/quantity", (MedEquipCentralDbContext db, UpdateOrderProductQuantityDTO dto) =>
             {
                 var orderProduct = db.OrderProducts
-                    .SingleOrDefault(op => op.ProductId == dto.ProductId && op.OrderId == dto.OrderId);
+                    .FirstOrDefault(op => op.ProductId == dto.ProductId && op.OrderId == dto.OrderId);
 
                 if (orderProduct != null)
                 {
