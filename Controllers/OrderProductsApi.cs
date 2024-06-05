@@ -45,7 +45,9 @@ namespace MedEquipCentral.Controllers
 
                 if (orderProduct != null)
                 {
-                    orderProduct.Quantity = dto.NewQuantity;
+                    orderProduct.Quantity = dto.Quantity;
+                    orderProduct.OrderId = dto.OrderId;
+                    orderProduct.ProductId = dto.ProductId;
                     db.SaveChanges();
                     return Results.Ok();
                 }

@@ -175,6 +175,74 @@ namespace MedEquipCentral.Controllers
                 return Results.Ok(orderhistory);
             });
 
+            //view order history details
+            app.MapGet("/orders/{userId}/single/{orderId}", (MedEquipCentralDbContext db, int userId, int orderId) =>
+            {
+                // Retrieve the order with the specified ID for the given user
+                var order = db.Orders
+                    .Include(o => o.User)
+                        .ThenInclude(u => u.JobFunction)
+                    .Include(o => o.OrderProducts)
+                        .ThenInclude(p => p.Product)
+                        .ThenInclude(p => p.Category)
+                    .SingleOrDefault(o => o.Id == orderId && o.UserId == userId);
+
+                if (order == null)
+                {
+                    return Results.NotFound();
+                }
+
+                // Construct the response object with order details
+                var orderDetails = new
+                {
+                    order.Id,
+                    order.UserId,
+                    User = new
+                    {
+                        order.User.Id,
+                        order.User.FirstName,
+                        order.User.LastName,
+                        order.User.Image,
+                        order.User.Email,
+                        order.User.Address,
+                        order.User.JobFunctionId,
+                        order.User.IsAdmin,
+                        order.User.IsBizOwner,
+                        order.User.Uid,
+                        JobFunction = new
+                        {
+                            order.User.JobFunction.Id,
+                            order.User.JobFunction.Name
+                        }
+                    },
+                    order.IsClosed,
+                    order.CreditCardNumber,
+                    order.ExpirationDate,
+                    order.CVV,
+                    order.Zip,
+                    order.Total,
+                    order.TotalProducts,
+                    CloseDate = order.CloseDate.HasValue ? order.CloseDate.Value.ToString("MM/dd/yyyy") : null,
+                    Products = order.OrderProducts.Select(op => new
+                    {
+                        op.Product.Id,
+                        op.Product.Name,
+                        op.Product.Image,
+                        op.Product.CategoryId,
+                        Category = new
+                        {
+                            op.Product.Category.Id,
+                            op.Product.Category.Name
+                        },
+                        op.Product.Description,
+                        op.Product.Price,
+                        Quantity = op.Quantity
+                    }).ToList()
+                };
+
+                return Results.Ok(orderDetails);
+            });
+
         }
     }
 }

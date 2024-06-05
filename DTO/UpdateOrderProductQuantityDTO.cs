@@ -5,6 +5,6 @@ namespace MedEquipCentral.DTO
     {
         public int ProductId { get; set; }
         public int OrderId { get; set; }
-        public int NewQuantity { get; set; }
+        public int Quantity { get; set; }
     }
 }
