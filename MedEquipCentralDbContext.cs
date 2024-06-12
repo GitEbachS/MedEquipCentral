@@ -190,7 +190,7 @@ using MedEquipCentral.Models;
     {
         Id = 2,
         Name = "IV Start Kit",
-        Image = "https://www.life-assist.com/Content/ProductImages/960x720/04_IT8052_01.jpg",
+        Image = "https://m.media-amazon.com/images/I/21bk5VPlZlL.jpg",
         CategoryId = 2, // IV Therapy
         Description = "Comprehensive IV start kit with all necessary components.",
         Price = 12.99M
@@ -199,7 +199,7 @@ using MedEquipCentral.Models;
     {
         Id = 3,
         Name = "First Aid Kit",
-        Image = "https://www.life-assist.com/Content/ProductImages/460x345/05_fj8000new.jpg",
+        Image = "https://firstaidsuppliesonline.com/wp-content/uploads/2023/10/68-BANSI-RR-435x435.png",
         CategoryId = 3, // First Aid
         Description = "Complete first aid kit for handling minor injuries.",
         Price = 25.00M
@@ -208,7 +208,7 @@ using MedEquipCentral.Models;
     {
         Id = 4,
         Name = "Blood Glucose Monitor",
-        Image = "https://www.life-assist.com/Content/ProductImages/460x345/02_CHI708050_tstStrip.jpg",
+        Image = "https://cdn11.bigcommerce.com/s-kslxuc4w/images/stencil/500x659/products/1047/5929/lite_open__68268.1705045702.png?c=2",
         CategoryId = 4, // Diabetes Care
         Description = "Accurate and easy-to-use blood glucose monitor for diabetes management.",
         Price = 29.99M

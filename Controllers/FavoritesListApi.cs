@@ -31,6 +31,7 @@ namespace MedEquipCentral.Controllers
                     {
                         product.Id,
                         product.Name,
+                        product.Image,
                         product.Description,
                         product.Price
                     })
@@ -69,7 +70,7 @@ namespace MedEquipCentral.Controllers
                 user.Products.Add(product); //add product to favorites list
                 db.SaveChanges();
 
-                return Results.Created($"/users/{userId}/favoritesList/{productId}", null);
+                return Results.NoContent();
             });
 
             //delete from favorites list
