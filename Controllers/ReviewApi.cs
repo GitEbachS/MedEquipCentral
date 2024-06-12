@@ -29,7 +29,7 @@ namespace MedEquipCentral.Controllers
                 db.Reviews.Add(newReview);
                 db.SaveChanges();
 
-                return Results.Created($"/reviews/{newReview.Id}", newReview);
+                return Results.NoContent();
             });
 
             //update Review
@@ -49,7 +49,7 @@ namespace MedEquipCentral.Controllers
                 return Results.NoContent();
             });
 
-            //get Review by userId
+            //get Reviews by userId
             app.MapGet("/review/{userId}", (MedEquipCentralDbContext db, int userId) =>
             {
                 var userReviews = db.Reviews
@@ -77,6 +77,35 @@ namespace MedEquipCentral.Controllers
                 }
                 return Results.Ok(userReviews);
             });
+
+            //get single review by reviewId
+            app.MapGet("/singleReview/{reviewId}", (MedEquipCentralDbContext db, int reviewId) =>
+            {
+                var singleReview = db.Reviews
+                    .Where(r => r.Id == reviewId)
+                    .Select(r => new
+                    {
+                        r.Id,
+                        r.Rating,
+                        r.CommentReview,
+                        DateCreated = r.DateCreated.ToString("MM/dd/yyyy"),
+                        Product = new
+                        {
+                            r.Product.Id,
+                            r.Product.Name,
+                            r.Product.Image,
+                            r.Product.Price
+                        }
+                    })
+                    .SingleOrDefault();
+
+                if (singleReview == null)
+                {
+                    return Results.NotFound();
+                }
+                return Results.Ok(singleReview);
+            });
+
 
             //delete Review
             app.MapDelete("/reviews/delete/{reviewId}", (MedEquipCentralDbContext db, int reviewId) =>

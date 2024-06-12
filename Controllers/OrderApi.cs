@@ -130,7 +130,7 @@ namespace MedEquipCentral.Controllers
                 orderToUpdate.CreditCardNumber = orderUpdateDto.CreditCardNumber;
                 orderToUpdate.ExpirationDate = orderUpdateDto.ExpirationDate;
                 orderToUpdate.CVV = orderUpdateDto.CVV;
-                orderToUpdate.Zip = orderToUpdate.Zip;
+                orderToUpdate.Zip = orderUpdateDto.Zip;
                 orderToUpdate.CloseDate = DateTime.Now;
                 orderToUpdate.IsClosed = true;
 
@@ -209,6 +209,7 @@ namespace MedEquipCentral.Controllers
                         order.User.IsAdmin,
                         order.User.IsBizOwner,
                         order.User.Uid,
+                        CloseDate = order.CloseDate.HasValue ? order.CloseDate.Value.ToString("MM/dd/yyyy") : null,
                         JobFunction = new
                         {
                             order.User.JobFunction.Id,
