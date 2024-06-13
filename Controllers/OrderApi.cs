@@ -104,7 +104,7 @@ namespace MedEquipCentral.Controllers
                 orderToUpdate.CreditCardNumber = orderUpdateDto.CreditCardNumber;
                 orderToUpdate.ExpirationDate = orderUpdateDto.ExpirationDate;
                 orderToUpdate.CVV = orderUpdateDto.CVV;
-                orderToUpdate.Zip = orderToUpdate.Zip;
+                orderToUpdate.Zip = orderUpdateDto.Zip;
                 orderToUpdate.CloseDate = DateTime.Now;
                 orderToUpdate.IsClosed = true;
 
