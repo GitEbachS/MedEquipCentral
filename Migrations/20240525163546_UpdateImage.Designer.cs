@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MedEquipCentral.Migrations
 {
     [DbContext(typeof(MedEquipCentralDbContext))]
-    partial class MedEquipCentralDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240525163546_UpdateImage")]
+    partial class UpdateImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,7 +266,7 @@ namespace MedEquipCentral.Migrations
                         {
                             Id = 1,
                             CVV = 123,
-                            CloseDate = new DateTime(2024, 5, 24, 9, 22, 40, 366, DateTimeKind.Local).AddTicks(7104),
+                            CloseDate = new DateTime(2024, 5, 23, 11, 35, 45, 733, DateTimeKind.Local).AddTicks(6674),
                             CreditCardNumber = 1234567890123456L,
                             ExpirationDate = "12/25",
                             IsClosed = true,
@@ -275,7 +277,7 @@ namespace MedEquipCentral.Migrations
                         {
                             Id = 2,
                             CVV = 456,
-                            CloseDate = new DateTime(2024, 5, 25, 9, 22, 40, 366, DateTimeKind.Local).AddTicks(7172),
+                            CloseDate = new DateTime(2024, 5, 24, 11, 35, 45, 733, DateTimeKind.Local).AddTicks(6747),
                             CreditCardNumber = 9876543210987654L,
                             ExpirationDate = "03/27",
                             IsClosed = true,
@@ -296,9 +298,6 @@ namespace MedEquipCentral.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -1012,7 +1011,7 @@ namespace MedEquipCentral.Migrations
                         {
                             Id = 1,
                             CommentReview = "Great product!",
-                            DateCreated = new DateTime(2024, 5, 26, 14, 22, 40, 366, DateTimeKind.Utc).AddTicks(7227),
+                            DateCreated = new DateTime(2024, 5, 25, 16, 35, 45, 733, DateTimeKind.Utc).AddTicks(6798),
                             ProductId = 1,
                             Rating = 4,
                             UserId = 1
@@ -1021,7 +1020,7 @@ namespace MedEquipCentral.Migrations
                         {
                             Id = 2,
                             CommentReview = "Excellent quality!",
-                            DateCreated = new DateTime(2024, 5, 26, 14, 22, 40, 366, DateTimeKind.Utc).AddTicks(7230),
+                            DateCreated = new DateTime(2024, 5, 25, 16, 35, 45, 733, DateTimeKind.Utc).AddTicks(6801),
                             ProductId = 2,
                             Rating = 5,
                             UserId = 2

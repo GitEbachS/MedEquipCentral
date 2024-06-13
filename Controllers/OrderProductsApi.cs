@@ -28,13 +28,35 @@ namespace MedEquipCentral.Controllers
                 order.OrderProducts.Add(new OrderProduct
                 {
                     ProductId = orderProductDto.ProductId,
-                    OrderId = orderProductDto.OrderId
+                    OrderId = orderProductDto.OrderId,
+                    Quantity = 1
                 });
 
                 db.SaveChanges();
 
                 return Results.Ok("Product added to order successfully");
             });
+
+            //get the orderProduct quantity in an order
+            app.MapPut("/orderProduct/quantity", (MedEquipCentralDbContext db, UpdateOrderProductQuantityDTO dto) =>
+            {
+                var orderProduct = db.OrderProducts
+                    .FirstOrDefault(op => op.ProductId == dto.ProductId && op.OrderId == dto.OrderId);
+
+                if (orderProduct != null)
+                {
+                    orderProduct.Quantity = dto.Quantity;
+                    orderProduct.OrderId = dto.OrderId;
+                    orderProduct.ProductId = dto.ProductId;
+                    db.SaveChanges();
+                    return Results.Ok();
+                }
+                else
+                {
+                    return Results.NotFound();
+                }
+            });
+
 
 
             //delete product from an order
