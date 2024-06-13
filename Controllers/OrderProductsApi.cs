@@ -63,17 +63,18 @@ namespace MedEquipCentral.Controllers
             app.MapDelete("/orders/removeProduct/{orderId}/{productId}", (MedEquipCentralDbContext db, int orderId, int productId) =>
             {
                 OrderProduct orderProductToDelete = db.OrderProducts
-                                                    .Where(op => op.ProductId == productId)
-                                                    .Where(op => op.OrderId == orderId)
+                                                    .Where(op => op.ProductId == productId && op.OrderId == orderId)
                                                     .FirstOrDefault();
 
                 if (orderProductToDelete == null)
                 {
-                    return Results.NotFound();
+                    return Results.NotFound("OrderProduct not found");
                 }
 
                 db.OrderProducts.Remove(orderProductToDelete);
                 db.SaveChanges();
+
+                // Return 204 No Content upon successful deletion
                 return Results.NoContent();
             });
         }
