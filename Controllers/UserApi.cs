@@ -51,7 +51,7 @@ namespace MedEquipCentral.Controllers
             });
 
             //update User
-            app.MapPut("/updateUser/{userId}", (MedEquipCentralDbContext db, int userId, UserDto updatedUserDto) =>
+            app.MapPut("/updateUser/{userId}", (MedEquipCentralDbContext db, int userId, UpdateUserDto updatedUserDto) =>
             {
                 var userToUpdate = db.Users.Find(userId);
 
@@ -67,7 +67,6 @@ namespace MedEquipCentral.Controllers
                 userToUpdate.Address = updatedUserDto.Address;
                 userToUpdate.JobFunctionId = updatedUserDto.JobFunctionId;
                 userToUpdate.IsBizOwner = updatedUserDto.IsBizOwner;
-                userToUpdate.Uid = updatedUserDto.Uid;
 
                 db.SaveChanges();
 
@@ -82,7 +81,8 @@ namespace MedEquipCentral.Controllers
                 .Include(u => u.JobFunction)
                 .Where(u => u.Id == userId)
                 .Select(u => new
-                {
+                {   
+                    u.Id,
                     u.FirstName,
                     u.LastName, 
                     u.Image, 
