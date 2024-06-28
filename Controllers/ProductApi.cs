@@ -51,6 +51,7 @@ namespace MedEquipCentral.Controllers
                             r.Rating,
                             DateCreated = r.DateCreated.ToString("MM/dd/yyyy"),
                             r.CommentReview,
+                            r.UserId,
                             User = new { r.User.FirstName, r.User.LastName, r.User.Image } 
                         }),
                         SimilarProducts = p.SimilarItems.Select(si => new
